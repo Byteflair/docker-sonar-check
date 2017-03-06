@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e
+
 echo "Executing entrypoint"
 
 
@@ -30,9 +32,11 @@ fi
 
 response=$(curl -s -u $SONAR_LOGIN:$SONAR_PASSWORD $SONAR_HOST/api/qualitygates/project_status?projectKey=$PROJECT_ORG:$PROJECT_NAME | jq '.projectStatus.status')
 
-if [[ "$response" == *"ERROR"* ]]; then
-        echo "Quality gate decreased";
-	exit 1;
-fi
+case "$response" in
+  *ERROR*)
+    echo "Quality gate not passed";
+  	exit 1;
+  ;;
+esac
 
 echo "Quality gate passed !";
