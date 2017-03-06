@@ -28,9 +28,11 @@ if [ -z "$PROJECT_NAME" ]; then
 fi
 
 
-response=$(curl -u $SONAR_LOGIN:$SONAR_PASSWORD $SONAR_HOST/api/qualitygates/project_status?projectKey=$PROJECT_ORG:$PROJECT_NAME | jq '.projectStatus.status')
+response=$(curl -s -u $SONAR_LOGIN:$SONAR_PASSWORD $SONAR_HOST/api/qualitygates/project_status?projectKey=$PROJECT_ORG:$PROJECT_NAME | jq '.projectStatus.status')
 
 if [[ "$response" == *"ERROR"* ]]; then
         echo "Quality gate decreased";
 	exit 1;
 fi
+
+echo "Quality gate passed !";
