@@ -3,7 +3,6 @@ set -e
 
 echo "Executing entrypoint"
 
-
 if [ -z "$PLUGIN_USERNAME" ]; then
     echo "username not set!";
     exit 1;
@@ -29,6 +28,7 @@ if [ -z "$PLUGIN_PROJECT_NAME" ]; then
     exit 1;
 fi
 
+sleep 5
 
 response=$(curl -s -u $PLUGIN_USERNAME:$PLUGIN_PASSWORD $PLUGIN_HOST/api/qualitygates/project_status?projectKey=$PLUGIN_PROJECT_ORGANIZATION:$PLUGIN_PROJECT_NAME | jq '.projectStatus.status')
 
